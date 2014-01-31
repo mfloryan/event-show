@@ -7,8 +7,44 @@
     <title>Event Show</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/event-show.css" rel="stylesheet">
 </head>
 <body>
+
+    <div class="container">
+
+        <div class="header">
+            <h3 class="text-muted">Event Show</h3>
+        </div>
+
+        <div class="jumbotron">
+            <h1>Let's show some events</h1>
+
+           <form role="form">
+                <div class="form-group">
+                    <label for="eventStore">Event Store</label>
+                    <select class="form-control" id="eventStore"></select>
+                </div>
+                <div class="form-group">
+                    <label for="aggregateId">Aggregate ID</label>
+                    <input type="password" class="form-control" id="aggregateId" placeholder="Aggregate GUID">
+                </div>
+
+                <button id="loadData" type="button" class="btn btn-default">Submit</button>
+            </form>
+
+        </div>
+
+        <div class="row">
+            <div id="results" />
+        </div>
+
+        <div class="footer">
+            <p>&copy; <b>compare</b>the<b>market</b>.com 2014</p>
+        </div>
+
+    </div>
+
     <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/knockout-3.0.0.js"></script>
