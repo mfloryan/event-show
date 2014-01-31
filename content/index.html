@@ -23,14 +23,16 @@
            <form role="form">
                 <div class="form-group">
                     <label for="eventStore">Event Store</label>
-                    <select class="form-control" id="eventStore"></select>
+                    <select class="form-control" id="eventStore"
+                            data-bind="options: knownEventStores, optionsText: 'name', optionsValue: 'id', value: selectedEventStore, optionsCaption: ''">
+                            </select>
                 </div>
                 <div class="form-group">
                     <label for="aggregateId">Aggregate ID</label>
-                    <input type="password" class="form-control" id="aggregateId" placeholder="Aggregate GUID">
+                    <input type="text" class="form-control" id="aggregateId" placeholder="Aggregate GUID" data-bind="value: aggregateId">
                 </div>
 
-                <button id="loadData" type="button" class="btn btn-default">Submit</button>
+                <button id="loadData" type="button" data-bind="click: loadEvents" class="btn btn-default">Submit</button>
             </form>
 
         </div>
@@ -48,5 +50,6 @@
     <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/knockout-3.0.0.js"></script>
+    <script type="text/javascript" src="js/event-show.js"></script>
 </body>
 </html>
