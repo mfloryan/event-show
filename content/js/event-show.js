@@ -5,6 +5,7 @@ var EventShowModel = function() {
   self.aggregateId = ko.observable();
   self.selectedEventStore = ko.observable();
   self.selectedEnvironment = ko.observable();
+  self.events = ko.observableArray();
 
   this.loadEventStores = function() {
     $.get("/known-stores")
@@ -47,8 +48,6 @@ var EventShowModel = function() {
         })
   }
 };
-
-
 
 $(function() {
   var model = new EventShowModel();
