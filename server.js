@@ -24,6 +24,10 @@ app.get('/environments', function (req, res){
   res.send(environments);
 });
 
+app.get('/events', function( req, res) {
+  console.log(req.query);
+});
+
 var port = 8028;
 app.listen(port);
 console.log("Event Show is listening on port: " + port);

@@ -31,6 +31,20 @@ var EventShowModel = function() {
       return;
     }
 
+    var requestData = {
+      env: self.selectedEnvironment().id,
+      store: self.selectedEventStore(),
+      id: self.aggregateId()
+    };
+
+    $.getJSON("/events", requestData)
+        .done(function(data) {
+          console.log(data);
+        })
+        .fail(function( jqxhr, textStatus, error) {
+          console.log("Request failed: " + textStatus + " error:" + error);
+          alert("Sorry there is a problem with your request");
+        })
   }
 };
 
