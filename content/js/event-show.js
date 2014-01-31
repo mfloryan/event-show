@@ -1,8 +1,10 @@
 var EventShowModel = function() {
   var self = this;
   self.knownEventStores = ko.observableArray([]);
+  self.environments = ko.observableArray([]);
   self.aggregateId = ko.observable();
   self.selectedEventStore = ko.observable();
+  self.selectedEnvironment = ko.observable();
 
   this.loadEventStores = function() {
     $.get("/known-stores")
@@ -11,12 +13,24 @@ var EventShowModel = function() {
         });
   };
 
+  this.loadEnvironments = function() {
+    $.get("/environments")
+        .done(function(data) {
+          self.environments(data);
+        });
+  };
+
+  this.populateDropDowns = function() {
+    self.loadEventStores();
+    self.loadEnvironments();
+  };
+
   this.loadEvents = function() {
-    if (!self.aggregateId() || !self.selectedEventStore()) {
+    if (!self.aggregateId() || !self.selectedEventStore() || !self.selectedEnvironment()) {
       alert("Please fill the form in");
       return;
     }
-    
+
   }
 };
 
@@ -25,5 +39,5 @@ var EventShowModel = function() {
 $(function() {
   var model = new EventShowModel();
   ko.applyBindings(model);
-  model.loadEventStores();
+  model.populateDropDowns();
 });

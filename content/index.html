@@ -21,6 +21,15 @@
             <h1>Let's show some events</h1>
 
            <form role="form">
+               <!-- ko foreach: environments -->
+               <div class="radio">
+                   <label>
+                       <input type="radio" name="envRadios" data-bind="checkedValue: $data, checked: $root.selectedEnvironment">
+                       <span data-bind="text:name"></span>
+                   </label>
+               </div>
+               <!-- /ko -->
+
                 <div class="form-group">
                     <label for="eventStore">Event Store</label>
                     <select class="form-control" id="eventStore"
