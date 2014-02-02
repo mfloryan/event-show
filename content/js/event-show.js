@@ -26,6 +26,15 @@ var EventShowModel = function() {
     self.loadEnvironments();
   };
 
+  this.getEventJson = function($data) {
+    var plainJs = ko.toJS($data.Payload.Body);
+    delete plainJs._t;
+    delete plainJs._id;
+    delete plainJs.Version;
+    delete plainJs._Metadata;
+    return JSON.stringify(plainJs,null, '  ');
+  };
+
   this.loadEvents = function() {
     if (!self.aggregateId() || !self.selectedEventStore() || !self.selectedEnvironment()) {
       alert("Please fill the form in");

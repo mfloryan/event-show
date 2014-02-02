@@ -41,17 +41,29 @@
                     <input type="text" class="form-control" id="aggregateId" placeholder="Aggregate GUID" data-bind="value: aggregateId">
                 </div>
 
-                <button id="loadData" type="button" data-bind="click: loadEvents" class="btn btn-default">Submit</button>
+                <button id="loadData" type="button" data-bind="click: loadEvents" class="btn btn-default"><i class="glyphicon glyphicon-download"></i> Let the show begin!</button>
             </form>
 
         </div>
 
         <div class="row">
-            <ul>
+            <div class="panel-group" id="listOfEvents">
             <!-- ko foreach: events -->
-                <li data-bind="text: Payload.Body._t"></li>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-bind="attr: {href: '#event_panel' + $index()}, text: Payload.Body.Version + ' : ' + Payload.Body._t">
+                            </a>
+                        </h4>
+                    </div>
+                    <div data-bind="attr: {id: 'event_panel' + $index()}" id="collapseOne" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <pre data-bind="text: $parent.getEventJson($data)"></pre>
+                        </div>
+                    </div>
+                </div>
             <!-- /ko -->
-            </ul>
+            </div>
         </div>
 
         <div class="footer">
