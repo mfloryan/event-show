@@ -4,15 +4,13 @@ var mongodb = require('mongodb');
 var guid = require('./lib/guid-translation');
 
 var knownEventStores = [
-  { id: "risk",
-    name: "Home - Risk" },
-  { id: "enquiry",
-    name : "Panel - Enquiry"},
+  { id: "risk",     name: "Home - Risk",      db: 'eventstore_home_risk'},
+  { id: "enquiry",  name: "Panel - Enquiry",  db: 'eventstore_panel_enquiry'},
 ];
 
 var environments = [
-  { id: "local", name: "Local"},
-  { id: "dev", name: "Development"},
+  { id: "local",  name: "Local",        url: 'mongodb://localhost:27017/'},
+  { id: "dev",    name: "Development",  url: 'mongodb://peg-ctmcmndb02:27017/'},
 ];
 
 var app = express();
@@ -20,21 +18,42 @@ var app = express();
 app.use(express.static(__dirname + '/content'));
 
 app.get('/known-stores', function (req, res){
-  res.send(knownEventStores);
+  res.send(_.map(knownEventStores, function(item) { return _.omit(item,'db')}));
 });
 
 app.get('/environments', function (req, res){
-  res.send(environments);
+  res.send(_.map(environments, function(item) { return _.omit(item, 'url')}));
 });
 
 app.get('/events', function(req, res) {
   var aggregateId = guid.toMongoBinary(req.query.id);
 
-  mongodb.MongoClient.connect("mongodb://localhost:27017/eventstore_home_risk", function (err, db) {
+  var environment = _.find(environments, {id : req.query.env});
+
+  if (!environment) {
+    res.status(400).send('Unknown environment');
+    return;
+  }
+
+  var eventStore = _.find(knownEventStores, {id : req.query.store});
+
+  if (!eventStore) {
+    res.status(400).send('Unknown event store');
+    return;
+  }
+
+  mongodb.MongoClient.connect(environment.url + eventStore.db, function (err, db) {
     if (err) throw err;
     var collection = db.collection("Commits");
     collection.find({ '_id.StreamId' : aggregateId }, {'Events':1}).toArray(function(err,results) {
       if (err) throw err;
+
+      if (!results.length) {
+        db.close();
+        res.send(404);
+        return;
+      }
+
       console.log(guid.fromBinary(results[0].Events[0].Payload.Body._id));
       res.json(_.flatten(results,'Events'));
       db.close();
