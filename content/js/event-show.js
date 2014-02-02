@@ -5,7 +5,7 @@ var EventShowModel = function() {
   self.aggregateId = ko.observable();
   self.selectedEventStore = ko.observable();
   self.selectedEnvironment = ko.observable();
-  self.events = ko.observableArray();
+  self.events = ko.observableArray([]);
 
   this.loadEventStores = function() {
     $.get("/known-stores")
@@ -40,7 +40,7 @@ var EventShowModel = function() {
 
     $.getJSON("/events", requestData)
         .done(function(data) {
-          console.log(data);
+          self.events(data);
         })
         .fail(function( jqxhr, textStatus, error) {
           console.log("Request failed: " + textStatus + " error:" + error);

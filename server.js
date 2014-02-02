@@ -98,7 +98,7 @@ app.get('/events', function(req, res) {
     var collection = db.collection("Commits");
     collection.find({ '_id.StreamId' : aggregateId }, {'Events':1}).toArray(function(err,results) {
       if (err) throw err;
-      console.log(GetCSharpGuidForBinaryFromMongo(results[0].Events[0].Payload.Body._id));
+      //console.log(GetCSharpGuidForBinaryFromMongo(results[0].Events[0].Payload.Body._id));
       res.json(_.flatten(results,'Events'));
       db.close();
     });

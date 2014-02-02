@@ -47,7 +47,11 @@
         </div>
 
         <div class="row">
-            <div id="results" />
+            <ul>
+            <!-- ko foreach: events -->
+                <li data-bind="text: Payload.Body._t"></li>
+            <!-- /ko -->
+            </ul>
         </div>
 
         <div class="footer">
