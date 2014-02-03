@@ -41,6 +41,8 @@ var EventShowModel = function() {
       return;
     }
 
+    self.events([]);
+
     var requestData = {
       env: self.selectedEnvironment().id,
       store: self.selectedEventStore(),
