@@ -11,6 +11,7 @@ var knownEventStores = [
 var environments = [
   { id: "local",  name: "Local",        url: 'mongodb://localhost:27017/'},
   { id: "dev",    name: "Development",  url: 'mongodb://peg-ctmcmndb02:27017/'},
+  { id: "prod",   name: "Production",   url: 'mongodb://peg-ctmmongdb02:27017/'},
 ];
 
 var app = express();
