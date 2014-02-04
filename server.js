@@ -1,6 +1,6 @@
 var express = require('express');
 var _ = require('lodash');
-var mongodb = require('mongodb');
+var repository = require('./lib/mongo-repository');
 var guid = require('./lib/guid-translation');
 
 var knownEventStores = [
@@ -43,23 +43,15 @@ app.get('/events', function(req, res) {
     return;
   }
 
-  mongodb.MongoClient.connect(environment.url + eventStore.db, function (err, db) {
-    if (err) throw err;
-    var collection = db.collection("Commits");
-    collection.find({ '_id.StreamId' : aggregateId }, {'Events':1}).toArray(function(err,results) {
-      if (err) throw err;
-
-      if (!results.length) {
-        db.close();
-        res.send(404);
-        return;
-      }
-
-      console.log(guid.fromBinary(results[0].Events[0].Payload.Body._id));
-      res.json(_.flatten(results,'Events'));
-      db.close();
-    });
+  repository.getEvents(environment.url + eventStore.db, aggregateId, function(events) {
+    if (!events.length) {
+      res.send(404);
+      return;
+    }
+    console.log(guid.fromBinary(events[0].Events[0].Payload.Body._id));
+    res.json(_.flatten(events,'Events'));
   });
+
 });
 
 var port = 8028;
