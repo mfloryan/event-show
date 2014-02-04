@@ -61,8 +61,4 @@
     app.listen(port, callback);
   };
 
-  exports.stop = function() {
-    app.close();
-  }
-
 }());

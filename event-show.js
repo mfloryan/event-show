@@ -1,14 +1,14 @@
-var server = require('./server');
+(function() {
+  "use strict";
 
-var port = 8028;
+  var server = require('./server');
 
-server.start(port, function() {
-    console.log("Server started.");
-});
+  var port = 8028;
 
-console.log("Event Show is about to listen on port: " + port);
+  server.start(port, function() {
+      console.log("Server started.");
+  });
 
-process.on('exit', function() {
-  console.log("Goodbye!");
-  server.stop();
-})
+  console.log("Event Show is about to listen on port: " + port);
+
+}());
