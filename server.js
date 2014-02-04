@@ -55,5 +55,9 @@ app.get('/events', function(req, res) {
 });
 
 var port = 8028;
-app.listen(port);
-console.log("Event Show is listening on port: " + port);
+
+app.listen(port, function() {
+  console.log("Server started.");
+});
+
+console.log("Event Show is about to listen on port: " + port);
