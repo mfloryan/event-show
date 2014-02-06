@@ -21,6 +21,7 @@
   var app = express();
 
   app.use(express.static(__dirname + '/content'));
+  app.use('/lodash', express.static(__dirname + '/node_modules/lodash/dist'));
 
   app.get('/known-stores', function (req, res){
     res.send(_.map(knownEventStores, function(item) { return _.omit(item,'db')}));

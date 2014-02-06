@@ -9,10 +9,10 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/event-show.css" rel="stylesheet">
 </head>
-<body>
+<body ng-app="eventViewer">
 
-    <div class="container">
-
+    <div class="container" ng-controller="myController">
+        {{prop}}
         <div class="header">
             <h3 class="text-muted">Event Show</h3>
         </div>
@@ -21,48 +21,43 @@
             <h1>Let's show some events</h1>
 
            <form role="form">
-               <!-- ko foreach: environments -->
-               <div class="radio">
+               <div class="radio" ng-repeat="item in environments">
                    <label>
-                       <input type="radio" name="envRadios" data-bind="checkedValue: $data, checked: $root.selectedEnvironment">
-                       <span data-bind="text:name"></span>
+                       <input type="radio" ng-model="model.selectedEnv" name="env" value="{{item.id}}"/>
+                       <span>{{item.name}}</span>
                    </label>
                </div>
-               <!-- /ko -->
 
                 <div class="form-group">
                     <label for="eventStore">Event Store</label>
-                    <select class="form-control" id="eventStore"
-                            data-bind="options: knownEventStores, optionsText: 'name', optionsValue: 'id', value: selectedEventStore, optionsCaption: ''">
-                            </select>
+                    <select class="form-control" id="eventStore" ng-model="selectedStore" ng-options="s.name for s in knownStores"></select>
                 </div>
                 <div class="form-group">
                     <label for="aggregateId">Aggregate ID</label>
-                    <input type="text" class="form-control" id="aggregateId" placeholder="Aggregate GUID" data-bind="value: aggregateId">
+                    <input type="text" class="form-control" id="aggregateId" placeholder="Aggregate GUID" ng-model="aggregateId">
                 </div>
 
-                <button id="loadData" type="button" data-bind="click: loadEvents" class="btn btn-default btn-primary"><i class="glyphicon glyphicon-download"></i> Let the show begin!</button>
+                <button id="loadData" type="button" ng-click="showEvents()" class="btn btn-default btn-primary"><i class="glyphicon glyphicon-download"></i> Let the show begin!</button>
             </form>
 
         </div>
 
         <div class="row">
             <div class="panel-group" id="listOfEvents">
-            <!-- ko foreach: events -->
-                <div class="panel panel-default">
+                <div class="panel panel-default" ng-repeat="event in events">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-bind="attr: {href: '#event_panel' + $index()}, text: Payload.Body.Version + ' : ' + Payload.Body._t">
+                            <a data-toggle="collapse" ng-attr-href="#panel-{{$index}}">
+                                {{event.Payload.Body.Version}} : {{event.Payload.Body._t}}
                             </a>
                         </h4>
                     </div>
-                    <div data-bind="attr: {id: 'event_panel' + $index()}" id="collapseOne" class="panel-collapse collapse">
+                    <div class="panel-collapse collapse" ng-attr-id="panel-{{$index}}">
                         <div class="panel-body">
-                            <pre data-bind="text: $parent.getEventJson($data)"></pre>
+                            <pre>{{model.formatEvent(event)}}</pre>
                         </div>
                     </div>
                 </div>
-            <!-- /ko -->
             </div>
         </div>
 
@@ -73,8 +68,9 @@
     </div>
 
     <script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/knockout-3.0.0.js"></script>
-    <script type="text/javascript" src="js/event-show.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lodash/lodash.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
