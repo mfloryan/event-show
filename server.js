@@ -9,6 +9,7 @@
   var knownEventStores = [
     { id: "risk",     name: "Home - Risk",      db: 'eventstore_home_risk'},
     { id: "enquiry",  name: "Panel - Enquiry",  db: 'eventstore_panel_enquiry'},
+    { id: "visit",    name: "Visit Tracking",   db: 'eventstore_visit_tracking'}
   ];
 
   var environments = [
