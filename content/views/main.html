@@ -1,0 +1,52 @@
+<div class="jumbotron">
+    <h1>Let's show some events</h1>
+
+    <form role="form">
+        <div class="radio" ng-repeat="item in environments">
+            <label>
+                <input type="radio" ng-model="model.selectedEnv" name="env" value="{{item.id}}"/>
+                <span>{{item.name}}</span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label for="eventStore">Event Store</label>
+            <select class="form-control" id="eventStore" ng-model="selectedStore" ng-options="s.name for s in knownStores"></select>
+        </div>
+        <div class="form-group">
+            <label for="aggregateId">Aggregate ID</label>
+            <input type="text" class="form-control" id="aggregateId" placeholder="Aggregate GUID" ng-model="aggregateId">
+        </div>
+
+        <button id="loadData" type="button" ng-click="showEvents()" class="btn btn-default btn-primary"><i class="glyphicon glyphicon-download"></i> Let the show begin!</button>
+    </form>
+
+</div>
+
+<div class="row">
+    <div class="panel panel-primary" ng-show="events">
+        <div class="panel-heading">Event type filter</div>
+        <div class="panel-body">
+            <select class="form-control" id="eventTypeFilter" ng-model="typeFilter" ng-options="t for t in eventTypes()">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="panel-group" id="listOfEvents">
+        <div class="panel panel-default" ng-repeat="event in events | filter:selectByEventType(typeFilter)">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" ng-attr-href="#panel-{{$index}}" onclick="return false;">
+                        {{event.Payload.Body.Version}} : {{event.Payload.Body._t}}
+                    </a>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" ng-attr-id="panel-{{$index}}">
+                <div class="panel-body">
+                    <pre>{{model.formatEvent(event)}}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

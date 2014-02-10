@@ -1,4 +1,11 @@
-angular.module('eventViewer',[])
+angular.module('eventViewer',['ngRoute'])
+
+  .config(function($routeProvider, $locationProvider) {
+    $routeProvider.when('/', {
+      templateUrl: 'views/main.html',
+      controller: 'myController'
+    });
+  })
 
   .controller('myController',function($scope,$http,eventHttpService){
       eventHttpService.getEnv().success(function(data) { $scope.environments = data});
