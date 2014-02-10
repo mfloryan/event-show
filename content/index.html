@@ -43,8 +43,17 @@
         </div>
 
         <div class="row">
+            <div class="panel panel-primary" ng-show="events">
+                <div class="panel-heading">Event type filter</div>
+                <div class="panel-body">
+                <select class="form-control" id="eventTypeFilter" ng-model="typeFilter" ng-options="t for t in eventTypes()">
+                    <option value=""></option>
+                </select>
+                </div>
+            </div>
+
             <div class="panel-group" id="listOfEvents">
-                <div class="panel panel-default" ng-repeat="event in events">
+                <div class="panel panel-default" ng-repeat="event in events | filter:selectByEventType(typeFilter)">
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" ng-attr-href="#panel-{{$index}}">

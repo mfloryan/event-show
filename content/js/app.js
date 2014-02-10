@@ -23,6 +23,22 @@ angular.module('eventViewer',[])
           });
     };
 
+    $scope.eventTypes = function() {
+      if (!$scope.events) return [];
+      var listOfEventTypes = _.map($scope.events, function (event) {
+        return event.Payload.Body._t
+      });
+      var uniq = _.uniq(listOfEventTypes);
+      return uniq;
+    };
+
+    $scope.selectByEventType = function(eventType) {
+      return function(item) {
+        if (eventType) return item.Payload.Body._t === eventType;
+        return true;
+      };
+    };
+
     $scope.model.formatEvent = function(event) {
       return JSON.stringify(_.omit(event.Payload.Body, ['_id','_Metadata', '_t', 'Version']), null, '  ');
     }
